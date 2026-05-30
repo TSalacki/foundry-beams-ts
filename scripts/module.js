@@ -410,7 +410,7 @@ Hooks.on("renderTokenHUD", async (app, html /* jQuery/HTMLElement */, data) => {
 });
 
 
-Hooks.on("foundry-beams.wall-enter", ({ wall, wallId, token, beam }) => {
+Hooks.on("foundry-beams.wall-enter", ({ wall, wallId, token, mirrorData }) => {
   //  ui.notifications.info(`enter ${wall.id}`);
   console.log(`[${MOD_NAME}] Wall Enter detected for token ${token.id} and wall ${wall.id}`);
   const targetObject = foundry.utils.fromUuidSync(mirrorData?.macro)
