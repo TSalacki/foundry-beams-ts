@@ -173,8 +173,9 @@ export function updateBeam(token, override = null, forceUpdate = false) {
         if (inst?.hitWalls) {
             for (const wallId of inst.hitWalls) {
                 const wall = canvas.scene?.walls?.get(wallId);
+                const mirrorData = foundry.utils.getProperty(wall, "flags.foundry-beams.mirror") ?? {};
                 console.log("[foundry-beams] Firing wall hook:", wall, wallId, token, inst, Hooks);
-                Hooks.callAll("foundry-beams.wall-enter", { wall, wallId, token, beam: inst });
+                Hooks.callAll("foundry-beams.wall-enter", { wall, wallId, token, beam: inst, mirrorData: mirrorData });
             }
         }
     }
