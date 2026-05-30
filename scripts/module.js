@@ -415,6 +415,7 @@ Hooks.on("foundry-beams.wall-enter", ({ wall, token, beam, mirrorData }) => {
   console.log(`[${MOD_NAME}] Wall Enter detected for token ${token.id} and wall ${wall.id}`);
   const targetObject = foundry.utils.fromUuidSync(mirrorData?.macro)
   console.log(`[${MOD_NAME}]`, targetObject)
+  if (targetObject == null) return;
   if (targetObject.documentName === "Tile") {
     targetObject.trigger({ tokens: [], method: 'trigger', options: { landing: `Beam-${token.name}-enter` } });
   } else if (targetObject.documentName === "Macro") {
@@ -430,8 +431,9 @@ Hooks.on("foundry-beams.wall-enter", ({ wall, token, beam, mirrorData }) => {
 Hooks.on("foundry-beams.wall-exit", ({ wall, token, beam, mirrorData }) => {
   //  ui.notifications.error(`leave ${wall.id}`);
   console.log(`[${MOD_NAME}] Wall Enter detected for token ${token.id} and wall ${wall.id}`);
-  const targetObject = foundry.utils.fromUuidSync(mirrorData?.macroExit)
+  const targetObject = foundry.utils.fromUuidSync(mirrorData?.macroExit) 
   console.log(`[${MOD_NAME}]`, targetObject)
+  if (targetObject == null) return;
   if (targetObject.documentName === "Tile") {
     targetObject.trigger({ tokens: [], method: 'trigger', options: { landing: `Beam-${token.name}-exit` } });
   } else if (targetObject.documentName === "Macro") {
