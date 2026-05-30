@@ -161,7 +161,10 @@ export function updateBeam(token, override = null, forceUpdate = false) {
             if (inst?.hitWalls) {
                 for (const wallId of inst.hitWalls) {
                     const wall = canvas.scene?.walls?.get(wallId);
-                    Hooks.callAll("foundry-beams.wall-leave", { wall, wallId, token, beam: inst, reason: "deactivate" });
+                    const mirrorData = foundry.utils.getProperty(wall, "flags.foundry-beams.mirror") ?? {};
+                    if (mirrorData?.isReactiveExit && mirrorData?.macroExit) {
+                        Hooks.callAll("foundry-beams.wall-exit", { wall: wall, token: token, beam: inst, mirrorData: mirrorData });
+                    }
                 }
             }
         }
@@ -174,8 +177,10 @@ export function updateBeam(token, override = null, forceUpdate = false) {
             for (const wallId of inst.hitWalls) {
                 const wall = canvas.scene?.walls?.get(wallId);
                 const mirrorData = foundry.utils.getProperty(wall, "flags.foundry-beams.mirror") ?? {};
-                console.log("[foundry-beams] Firing wall hook:", wall, wallId, token, inst, Hooks);
-                Hooks.callAll("foundry-beams.wall-enter", { wall, wallId, token, beam: inst, mirrorData: mirrorData });
+                if (mirrorData?.isReactiveExit && mirrorData?.macroExit) {
+                    console.log("[foundry-beams] Firing wall hook:", wall, wallId, token, inst, Hooks);
+                    Hooks.callAll("foundry-beams.wall-enter", { wall, wallId, token, beam: inst, mirrorData: mirrorData });
+                }
             }
         }
     }
@@ -458,7 +463,10 @@ export function destroyBeam(token) {
     if (inst?.hitWalls) {
         for (const wallId of inst.hitWalls) {
             const wall = canvas.scene?.walls?.get(wallId);
-            Hooks.callAll("foundry-beams.wall-leave", { wall, wallId, token, beam: inst, reason: "destroy" });
+            const mirrorData = foundry.utils.getProperty(wall, "flags.foundry-beams.mirror") ?? {};
+            if (mirrorData?.isReactiveExit && mirrorData?.macroExit) {
+                Hooks.callAll("foundry-beams.wall-exit", { wall: wall, token: token, beam: inst, mirrorData: mirrorData });
+            }
         }
     }
     const style = StyleRegistry.get(flagStyle) ?? StyleRegistry.get("laser");
