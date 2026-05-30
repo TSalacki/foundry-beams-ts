@@ -413,8 +413,7 @@ Hooks.on("renderTokenHUD", async (app, html /* jQuery/HTMLElement */, data) => {
 Hooks.on("foundry-beams.wall-enter", ({ wall, wallId, token, beam }) => {
   //  ui.notifications.info(`enter ${wall.id}`);
   console.log(`[${MOD_NAME}] Wall Enter detected for token ${token.id} and wall ${wall.id}`);
-  if (!beam?.macro) return;
-  const targetObject = foundry.utils.fromUuidSync(beam?.macro)
+  const targetObject = foundry.utils.fromUuidSync(mirrorData?.macro)
   console.log(`[${MOD_NAME}]`, targetObject)
   if (targetObject.documentName === "Tile") {
     targetObject.trigger({ tokens: [], method: 'trigger', options: { landing: `Beam-${token.name}-enter` } });
