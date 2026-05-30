@@ -410,7 +410,7 @@ Hooks.on("renderTokenHUD", async (app, html /* jQuery/HTMLElement */, data) => {
 });
 
 
-Hooks.on("foundry-beams.wall-enter", ({ wall, wallId, token, mirrorData }) => {
+Hooks.on("foundry-beams.wall-enter", ({ wall, token, beam, mirrorData }) => {
   //  ui.notifications.info(`enter ${wall.id}`);
   console.log(`[${MOD_NAME}] Wall Enter detected for token ${token.id} and wall ${wall.id}`);
   const targetObject = foundry.utils.fromUuidSync(mirrorData?.macro)
@@ -422,7 +422,7 @@ Hooks.on("foundry-beams.wall-enter", ({ wall, wallId, token, mirrorData }) => {
     targetObject.execute({});
   } else {
     // last chance it could be a legacy macro call
-    reactiveMacro(beam?.macro);
+    reactiveMacro(mirrorData?.macro);
   }
 
 });
